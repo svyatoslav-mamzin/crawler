@@ -1,7 +1,6 @@
 import asyncio
 import os
 import logging
-
 from pages import Page, Post, PageFromComment, parse_main_page
 from pages import INIT_URL, ROOT_FOLDER
 

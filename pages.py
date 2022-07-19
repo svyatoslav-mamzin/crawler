@@ -5,7 +5,7 @@ import logging
 import asyncio
 import async_timeout
 import aiohttp
-
+from aiohttp import ClientConnectorError, ServerDisconnectedError, TooManyRedirects
 from bs4 import BeautifulSoup
 
 INIT_URL = 'https://news.ycombinator.com/'
@@ -48,13 +48,13 @@ class Page:
             with async_timeout.timeout(FETCH_TIMEOUT):
                 async with aiohttp.ClientSession() as session:
                     html = await self.fetch(session)
-        except aiohttp.client_exceptions.ClientConnectorError:
+        except ClientConnectorError:
             logging.warning(f'Connection Error with {self.url}')
         except asyncio.TimeoutError:
             logging.warning(f'Timeout Error with {self.url}')
-        except aiohttp.client_exceptions.ServerDisconnectedError:
+        except ServerDisconnectedError:
             logging.warning(f'Server Disconnected Error with {self.url}')
-        except aiohttp.client_exceptions.TooManyRedirects:
+        except TooManyRedirects:
             logging.warning(f'Too many redirects on {self.url}')
         return html
 
